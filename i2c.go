@@ -14,6 +14,8 @@ import (
 	"fmt"
 	"os"
 	"syscall"
+
+	"k8s.io/klog"
 )
 
 // I2C represents a connection to I2C-device.
@@ -57,7 +59,7 @@ func (v *I2C) write(buf []byte) (int, error) {
 // WriteBytes send bytes to the remote I2C-device. The interpretation of
 // the message is implementation-dependent.
 func (v *I2C) WriteBytes(buf []byte) (int, error) {
-	lg.Debugf("Write %d hex bytes: [%+v]", len(buf), hex.EncodeToString(buf))
+	klog.Infof("Write %d hex bytes: [%+v]", len(buf), hex.EncodeToString(buf))
 	return v.write(buf)
 }
 
@@ -72,7 +74,7 @@ func (v *I2C) ReadBytes(buf []byte) (int, error) {
 	if err != nil {
 		return n, err
 	}
-	lg.Debugf("Read %d hex bytes: [%+v]", len(buf), hex.EncodeToString(buf))
+	klog.Infof("Read %d hex bytes: [%+v]", len(buf), hex.EncodeToString(buf))
 	return n, nil
 }
 
@@ -85,7 +87,7 @@ func (v *I2C) Close() error {
 // starting from reg address.
 // SMBus (System Management Bus) protocol over I2C.
 func (v *I2C) ReadRegBytes(reg byte, n int) ([]byte, int, error) {
-	lg.Debugf("Read %d bytes starting from reg 0x%0X...", n, reg)
+	klog.Infof("Read %d bytes starting from reg 0x%0X...", n, reg)
 	_, err := v.WriteBytes([]byte{reg})
 	if err != nil {
 		return nil, 0, err
@@ -111,7 +113,7 @@ func (v *I2C) ReadRegU8(reg byte) (byte, error) {
 	if err != nil {
 		return 0, err
 	}
-	lg.Debugf("Read U8 %d from reg 0x%0X", buf[0], reg)
+	klog.Infof("Read U8 %d from reg 0x%0X", buf[0], reg)
 	return buf[0], nil
 }
 
@@ -123,7 +125,7 @@ func (v *I2C) WriteRegU8(reg byte, value byte) error {
 	if err != nil {
 		return err
 	}
-	lg.Debugf("Write U8 %d to reg 0x%0X", value, reg)
+	klog.Infof("Write U8 %d to reg 0x%0X", value, reg)
 	return nil
 }
 
@@ -141,7 +143,7 @@ func (v *I2C) ReadRegU16BE(reg byte) (uint16, error) {
 		return 0, err
 	}
 	w := uint16(buf[0])<<8 + uint16(buf[1])
-	lg.Debugf("Read U16 %d from reg 0x%0X", w, reg)
+	klog.Infof("Read U16 %d from reg 0x%0X", w, reg)
 	return w, nil
 }
 
@@ -172,7 +174,7 @@ func (v *I2C) ReadRegS16BE(reg byte) (int16, error) {
 		return 0, err
 	}
 	w := int16(buf[0])<<8 + int16(buf[1])
-	lg.Debugf("Read S16 %d from reg 0x%0X", w, reg)
+	klog.Infof("Read S16 %d from reg 0x%0X", w, reg)
 	return w, nil
 }
 
@@ -199,7 +201,7 @@ func (v *I2C) WriteRegU16BE(reg byte, value uint16) error {
 	if err != nil {
 		return err
 	}
-	lg.Debugf("Write U16 %d to reg 0x%0X", value, reg)
+	klog.Infof("Write U16 %d to reg 0x%0X", value, reg)
 	return nil
 }
 
@@ -220,7 +222,7 @@ func (v *I2C) WriteRegS16BE(reg byte, value int16) error {
 	if err != nil {
 		return err
 	}
-	lg.Debugf("Write S16 %d to reg 0x%0X", value, reg)
+	klog.Infof("Write S16 %d to reg 0x%0X", value, reg)
 	return nil
 }
 

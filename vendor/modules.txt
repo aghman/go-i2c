@@ -1,0 +1,5 @@
+# github.com/d2r2/go-logger v0.0.0-20210606094344-60e9d1233e22
+## explicit
+# k8s.io/klog v1.0.0
+## explicit
+k8s.io/klog
